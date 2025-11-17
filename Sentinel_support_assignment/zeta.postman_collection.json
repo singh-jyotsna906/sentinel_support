@@ -1,0 +1,265 @@
+{
+	"info": {
+		"_postman_id": "56895642-5d99-4881-a60f-89216a08b61a",
+		"name": "zeta",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23209746"
+	},
+	"item": [
+		{
+			"name": "alert_get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/alerts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"alerts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ingest_transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n    \"id\": \"txn-1\",\r\n    \"customerId\": \"cust-1\",\r\n    \"cardId\": \"card-1\",\r\n    \"mcc\": \"5411\",\r\n    \"merchant\": \"Supermarket A\",\r\n    \"amount_cents\": 2599,\r\n    \"currency\": \"USD\",\r\n    \"ts\": \"2025-11-16T12:00:00Z\",\r\n    \"device_id\": \"device-123\",\r\n    \"country\": \"US\",\r\n    \"city\": \"New York\"\r\n  },\r\n  {\r\n    \"id\": \"txn-2\",\r\n    \"customerId\": \"cust-2\",\r\n    \"cardId\": \"card-2\",\r\n    \"mcc\": \"5812\",\r\n    \"merchant\": \"Restaurant B\",\r\n    \"amount_cents\": 4800,\r\n    \"currency\": \"USD\",\r\n    \"ts\": \"2025-11-16T13:30:00Z\",\r\n    \"device_id\": \"device-456\",\r\n    \"country\": \"US\",\r\n    \"city\": \"San Francisco\"\r\n  }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/ingest/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"ingest",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "triage",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-API-Key",
+						"value": "lead",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"alertId\":\"01\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/triage",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"triage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "triage",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "agent-key"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"alertId\": \"94e8f09a-4714-464c-9ab7-7eddffc0a1ae\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/triage",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"triage"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:3000/api/triage \\\r\n  -H \"Content-Type: application/json\" \\\r\n  -H \"X-API-Key: agent-key\" \\\r\n  -d '{\"alertId\": \"alert-123\"}'"
+			},
+			"response": []
+		},
+		{
+			"name": "transactions",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "agent-key"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n      \"id\": \"txn-1\",\r\n      \"customerId\": \"cust-1\",\r\n      \"cardId\": \"card-1\",\r\n      \"mcc\": \"5999\",\r\n      \"merchant\": \"Test Merchant 1\",\r\n      \"amount_cents\": 1000,\r\n      \"currency\": \"USD\",\r\n      \"ts\": \"2025-01-01T10:00:00.000Z\",\r\n      \"device_id\": \"device-1\",\r\n      \"country\": \"US\",\r\n      \"city\": \"New York\"\r\n    }\r\n  ]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/ingest/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"ingest",
+						"transactions"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:3000/api/ingest/transactions \\\r\n  -H \"Content-Type: application/json\" \\\r\n  -H \"X-API-Key: agent-key\" \\\r\n  -d '[\r\n    {\r\n      \"id\": \"txn-1\",\r\n      \"customerId\": \"cust-1\",\r\n      \"cardId\": \"card-1\",\r\n      \"mcc\": \"5999\",\r\n      \"merchant\": \"Test Merchant 1\",\r\n      \"amount_cents\": 1000,\r\n      \"currency\": \"USD\",\r\n      \"ts\": \"2025-01-01T10:00:00.000Z\",\r\n      \"device_id\": \"device-1\",\r\n      \"country\": \"US\",\r\n      \"city\": \"New York\"\r\n    }\r\n  ]'"
+			},
+			"response": []
+		},
+		{
+			"name": "alert",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "agent-key"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"suspectTxnId\": \"TXN_ID_FROM_DB\",\r\n    \"risk\": \"HIGH\",\r\n    \"status\": \"OPEN\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/alerts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"alerts"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:3000/api/alerts \\\r\n  -H \"Content-Type: application/json\" \\\r\n  -H \"X-API-Key: agent-key\" \\\r\n  -d '{\r\n    \"suspectTxnId\": \"TXN_ID_FROM_DB\",\r\n    \"risk\": \"HIGH\",\r\n    \"status\": \"OPEN\"\r\n  }'"
+			},
+			"response": []
+		},
+		{
+			"name": "stream_triage",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-API-Key",
+						"value": "agent-key"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/triage/a6e3c7d2-4f4a-4c55-8a8f-123456789abc/stream",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"triage",
+						"a6e3c7d2-4f4a-4c55-8a8f-123456789abc",
+						"stream"
+					]
+				},
+				"description": "Generated from cURL: curl -N http://localhost:3000/api/triage/a6e3c7d2-4f4a-4c55-8a8f-123456789abc/stream \\\r\n  -H \"X-API-Key: agent-key\""
+			},
+			"response": []
+		},
+		{
+			"name": "alert_list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/alerts/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"alerts",
+						"list"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
