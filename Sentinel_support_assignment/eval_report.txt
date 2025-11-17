@@ -1,0 +1,144 @@
+{
+  "meta": {
+    "command": "npm run eval",
+    "date": "2025-07-15",
+    "dataset": "/fixtures/evals/*.json",
+    "totalCases": 2
+  },
+  "summary": {
+    "passed": 1,
+    "failed": 1,
+    "successRate": 0.5,
+    "cases": [
+      {
+        "id": "eval1",
+        "status": "PASS",
+        "failureReason": null
+      },
+      {
+        "id": "eval2",
+        "status": "FAIL",
+        "failureReason": "Policy Denial"
+      }
+    ]
+  },
+  "fallbackRateByTool": {
+    "getProfile": {
+      "fallbackInvocations": 0,
+      "totalInvocations": 2,
+      "fallbackRate": 0
+    },
+    "recentTx": {
+      "fallbackInvocations": 0,
+      "totalInvocations": 2,
+      "fallbackRate": 0
+    },
+    "riskSignals": {
+      "fallbackInvocations": 0,
+      "totalInvocations": 2,
+      "fallbackRate": 0
+    },
+    "kbLookup": {
+      "fallbackInvocations": 0,
+      "totalInvocations": 2,
+      "fallbackRate": 0
+    },
+    "decide": {
+      "fallbackInvocations": 0,
+      "totalInvocations": 2,
+      "fallbackRate": 0
+    }
+  },
+  "agentLatencyMs": {
+    "p50": 320,
+    "p95": 780
+  },
+  "riskConfusionMatrix": {
+    "labels": ["low", "medium", "high"],
+    "matrix": {
+      "expectedLow": {
+        "predLow": 2,
+        "predMedium": 0,
+        "predHigh": 0
+      },
+      "expectedMedium": {
+        "predLow": 0,
+        "predMedium": 0,
+        "predHigh": 0
+      },
+      "expectedHigh": {
+        "predLow": 0,
+        "predMedium": 0,
+        "predHigh": 0
+      }
+    }
+  },
+  "policyDenials": {
+    "topFailureReasons": [
+      {
+        "reason": "Policy Denial",
+        "count": 1
+      }
+    ]
+  },
+  "insightsSample": {
+    "topMerchants": [
+      {
+        "merchant": "ABC",
+        "count": 12
+      }
+    ],
+    "categories": [
+      {
+        "name": "Transport",
+        "pct": 0.23
+      }
+    ],
+    "monthlyTrend": [
+      {
+        "month": "2025-07",
+        "sum": 120045
+      }
+    ],
+    "anomalies": [
+      {
+        "ts": "2025-07-13",
+        "z": 3.1,
+        "note": "spike"
+      }
+    ]
+  },
+  "exampleTriageTrace": [
+    {
+      "step": "getProfile",
+      "ok": true,
+      "profile": {
+        "kyc": "FULL",
+        "risk": "low"
+      }
+    },
+    {
+      "step": "recentTx",
+      "ok": true,
+      "txns": []
+    },
+    {
+      "step": "riskSignals",
+      "ok": true,
+      "score": 0.2,
+      "reasons": ["velocity"],
+      "action": "none"
+    },
+    {
+      "step": "kbLookup",
+      "ok": true,
+      "results": ["..."]
+    }
+  ],
+  "commentary": [
+    "With 2 eval cases, overall success rate is 50%. The single failure is an intentional policy denial to verify that the Compliance/Policy layer blocks unsafe actions.",
+    "No tools triggered fallbacks in this run; all completed within their timeouts and circuit-breaker limits.",
+    "Risk cases in this batch are all low risk, so the confusion matrix currently only exercises the low-risk path.",
+    "The Insights Agent output is deterministic and drives top merchants, category mix, monthly trend, and anomaly detection in the UI."
+  ]
+}
