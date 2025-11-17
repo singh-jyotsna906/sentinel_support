@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id          String    @id @default(uuid())
+  name        String
+  email_masked String
+  kyc_level   String
+  created_at  DateTime  @default(now())
+  cards       Card[]
+  accounts    Account[]
+  transactions Transaction[]
+  alerts      Alert[]
+  cases       Case[]
+}
+
+model Card {
+  id         String    @id @default(uuid())
+  customer   Customer  @relation(fields: [customerId], references: [id])
+  customerId String
+  last4      String
+  network    String
+  status     String
+  created_at DateTime  @default(now())
+  transactions Transaction[]
+}
+
+model Account {
+  id           String   @id @default(uuid())
+  customer     Customer @relation(fields: [customerId], references: [id])
+  customerId   String
+  balance_cents Int
+  currency     String
+}
+
+model Transaction {
+  id           String   @id @default(uuid())
+  customer     Customer @relation(fields: [customerId], references: [id])
+  customerId   String
+  card         Card     @relation(fields: [cardId], references: [id])
+  cardId       String
+  mcc          String
+  merchant     String
+  amount_cents Int
+  currency     String
+  ts           DateTime
+  device_id    String
+  country      String
+  city         String
+  alerts       Alert[]
+  cases        Case[]
+  @@index([customerId, ts(sort: Desc)])
+  @@index([merchant])
+  @@index([mcc])
+  @@index([customerId, merchant])
+}
+
+model Alert {
+  id            String      @id @default(uuid())
+  customer      Customer    @relation(fields: [customerId], references: [id])
+  customerId    String
+  suspect_txn   Transaction @relation(fields: [suspectTxnId], references: [id])
+  suspectTxnId  String
+  created_at    DateTime    @default(now())
+  risk          String
+  status        String
+  triageRuns    TriageRun[]
+}
+
+model Case {
+  id           String      @id @default(uuid())
+  customer     Customer    @relation(fields: [customerId], references: [id])
+  customerId   String
+  txn          Transaction? @relation(fields: [txnId], references: [id])
+  txnId        String?
+  type         String
+  status       String
+  reason_code  String
+  created_at   DateTime    @default(now())
+  events       CaseEvent[]
+}
+
+model CaseEvent {
+  id        String   @id @default(uuid())
+  case      Case     @relation(fields: [caseId], references: [id])
+  caseId    String
+  ts        DateTime
+  actor     String
+  action    String
+  payload_json Json
+}
+
+model TriageRun {
+  id            String    @id @default(uuid())
+  alert         Alert     @relation(fields: [alertId], references: [id])
+  alertId       String
+  started_at    DateTime
+  ended_at      DateTime?
+  risk          String
+  reasons       Json
+  fallback_used Boolean
+  latency_ms    Int
+  agentTraces   AgentTrace[]
+}
+
+model AgentTrace {
+  run           TriageRun @relation(fields: [runId], references: [id])
+  runId         String
+  seq           Int
+  step          String
+  ok            Boolean
+  duration_ms   Int
+  detail_json   Json
+  @@id([runId, seq])
+}
+
+model KbDoc {
+  id          String   @id @default(uuid())
+  title       String
+  anchor      String
+  content_text String
+}
+
+model Policy {
+  id          String   @id @default(uuid())
+  code        String
+  title       String
+  content_text String
+}
